@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if [ -z "$1" ]
-  then echo "Please provide the name of the game, e.g.  ./run_gpu breakout "; exit 0
+if [ -z "$1" ]; then
+  echo "Please provide the name of the game, e.g.  ./run_gpu pong"
+  exit 0
 fi
+
 ENV=$1
 FRAMEWORK="alewrap"
 
@@ -15,11 +17,11 @@ update_freq=4
 actrep=4
 discount=0.99
 seed=1
-learn_start=50000
+learn_start=5000
 pool_frms_type="\"max\""
 pool_frms_size=2
 initial_priority="false"
-replay_memory=1000000
+replay_memory=50000
 eps_end=0.1
 eps_endt=replay_memory
 lr=0.00025
@@ -43,4 +45,10 @@ args="-framework $FRAMEWORK -game_path $game_path -name $agent_name -env $ENV -e
 echo $args
 
 cd dqn
-../torch/bin/qlua train_agent.lua $args
+network_filename=$agent_name".t7"
+if [ -f $network_filename ]; then
+  qlua train_agent.lua $args -network $network_filename
+else
+  qlua train_agent.lua $args
+fi
+
