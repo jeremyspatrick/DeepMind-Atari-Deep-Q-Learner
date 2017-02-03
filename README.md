@@ -1,94 +1,49 @@
 # DeepMind Atari Deep Q Learner
-This repository hosts the [original code](https://sites.google.com/a/deepmind.com/dqn/) published along with [the article](http://www.nature.com/nature/journal/v518/n7540/full/nature14236.html) in Nature and my experiments (if any) with it.
 
-Tested on Ubuntu 14.04 with nVidia GTX 970:  
-![alt text](https://raw.githubusercontent.com/kuz/DeepMind-Atari-Deep-Q-Learner/master/gifs/breakout.gif "Playing Breakout")  
-More videos on [YouTube Playlist: Deepmind DQN Playing](https://www.youtube.com/playlist?list=PLgOp827qARy0qNyZq5Y6S6vRJO3tb1WcW)
+This repository was forked from [kuz's](https://github.com/kuz/DeepMind-Atari-Deep-Q-Learner). I made a few changes to the code so that it could run on NVIDIA's Jetson TX1 platform.
 
-DQN 3.0
--------
+After training the Deep Q Learner on Jetson TX1 for roughly a week, the AI agent could play the 'pong' game like this:
 
-This project contains the source code of DQN 3.0, a Lua-based deep reinforcement
-learning architecture, necessary to reproduce the experiments
-described in the paper "Human-level control through deep reinforcement
-learning", Nature 518, 529–533 (26 February 2015) doi:10.1038/nature14236.
+![pong-test](https://github.com/jkjung-avt/DeepMind-Atari-Deep-Q-Learner/blob/master/gifs/pong-test.gif?raw=true)
 
-To replicate the experiment results, a number of dependencies need to be
-installed, namely:
-* LuaJIT and Torch 7.0
-* nngraph
-* Xitari (fork of the Arcade Learning Environment (Bellemare et al., 2013))
-* AleWrap (a lua interface to Xitari)
-An install script for these dependencies is provided.
+For more information about what part of the code I've modified, please check out [my blog post](https://jkjung-avt.github.io/). Otherwise, please refer to [kuz's orginal repository](https://github.com/kuz/DeepMind-Atari-Deep-Q-Learner) for more background information about Deep Q Learning and DeepMind's Atari DQN implementation.
 
-Two run scripts are provided: run_cpu and run_gpu. As the names imply,
-the former trains the DQN network using regular CPUs, while the latter uses
-GPUs (CUDA), which typically results in a significant speed-up.
-
-Installation instructions
+Installation Instructions
 -------------------------
 
-The installation requires Linux with apt-get.
+The installation requires Linux with apt-get. It also **requires Torch7 with CUDA pre-installed** on the system, for which you can refer to ["How to Install Torch7 on Jetson TX1"](https://jkjung-avt.github.io/torch7-on-tx1/) or [the official Torch7 installation guide](http://torch.ch/docs/getting-started.html).
 
-Note: In order to run the GPU version of DQN, you should additionally have the
-NVIDIA® CUDA® (version 5.5 or later) toolkit installed prior to the Torch
-installation below.
-This can be downloaded from https://developer.nvidia.com/cuda-toolkit
-and installation instructions can be found in
-http://docs.nvidia.com/cuda/cuda-getting-started-guide-for-linux
+Although I have only mainly tested this Atari DQN on Jetson TX1 with NVIDIA CUDA 8.0, I think it should work on any Linux platform with a recent version of Torch7 and CUDA.
 
+The included installation script would install the following luarocks packages:
 
-To train DQN on Atari games, the following components must be installed:
-* LuaJIT and Torch 7.0
-* nngraph
-* Xitari
-* AleWrap
+* xitari
+* alewrap
+* luagd (for saving test episodes into gifs)
 
-To install all of the above in a subdirectory called 'torch', it should be enough to run
+All you need to do is to run the script.
 
-    ./install_dependencies.sh
+```shell
+ $ ./install_dependencies.sh
+```
 
-from the base directory of the package.
-
-
-Note: The above install script will install the following packages via apt-get:
-build-essential, gcc, g++, cmake, curl, libreadline-dev, git-core, libjpeg-dev,
-libpng-dev, ncurses-dev, imagemagick, unzip
-
-Training DQN on Atari games
+Training DQN on Atari Games
 ---------------------------
 
-Prior to running DQN on a game, you should copy its ROM in the 'roms' subdirectory.
-It should then be sufficient to run the script
+There already are 2 Atari game ROM files, pong.bin and breakout.bin, in the 'roms' subdirectory. You can train the DQN for an additional game by copying its ROM into the same subdirectory.
 
-    ./run_cpu <game name>
+For example, if you'd like to train the DQN with the 'pong' game, execute the following:
 
-Or, if GPU support is enabled,
+```shell
+ $ ./run_gpu pong
+```
 
-    ./run_gpu <game name>
+Saving a .gif for a Trained Network
+-----------------------------------
 
+Once you have a snapshot (dqn/*.t7) of the trained network, you can run for example:
 
-Note: On a system with more than one GPU, DQN training can be launched on a
-specified GPU by setting the environment variable GPU_ID, e.g. by
+```shell
+ $ ./test_gpu pong
+```
 
-    GPU_ID=2 ./run_gpu <game name>
-
-If GPU_ID is not specified, the first available GPU (ID 0) will be used by default.
-
-Storing a .gif for a trained network
-------------------------------------
-
-Once you have a snapshot of a network you can run
-
-	./test_gpu <game name> <snapshopt filename>
-
-to make it play one game and store the .gif under `gifs`. For example
-
-	./test_gpu breakout DQN3_0_1_breakout_FULL_Y.t7
-
-Options
--------
-
-Options to DQN are set within run_cpu (respectively, run_gpu). You may,
-for example, want to change the frequency at which information is output 
-to stdout by setting 'prog_freq' to a different value.
