@@ -30,13 +30,13 @@ All you need to do is to run the script.
 Training DQN on Atari Games
 ---------------------------
 
-There already are 2 Atari game ROM files, pong.bin and breakout.bin, in the 'roms' subdirectory. You can train the DQN for an additional game by copying its ROM into the same subdirectory.
-
-For example, if you'd like to train the DQN with the 'pong' game, execute the following:
+There already are 2 Atari game ROM files, pong.bin and breakout.bin, in the 'roms' subdirectory. So if you'd like to train the DQN with the 'pong' game, you could just execute the following:
 
 ```shell
  $ ./run_gpu pong
 ```
+
+You can train the DQN for additional games by copying the corresponding ROM files into the same subdirectory. And you'd replace 'pong' with the name of the game, e.g. 'breakout', in the shell command above.
 
 Saving a .gif for a Trained Network
 -----------------------------------
