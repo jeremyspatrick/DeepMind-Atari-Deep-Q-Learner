@@ -45,6 +45,7 @@ cmd:option('-verbose', 2,
            'the higher the level, the more information is printed to screen')
 cmd:option('-threads', 1, 'number of BLAS threads')
 cmd:option('-gpu', -1, 'gpu flag')
+cmd:option('-cudnn', false, 'use cudnn (only valid if gpu is set)')
 
 cmd:text()
 

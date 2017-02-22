@@ -121,6 +121,7 @@ function setup(_opt)
     -- agent options
     _opt.agent_params.actions   = gameActions
     _opt.agent_params.gpu       = _opt.gpu
+    _opt.agent_params.cudnn     = _opt.cudnn
     _opt.agent_params.best      = _opt.best
     if _opt.network ~= '' then
         _opt.agent_params.network = _opt.network

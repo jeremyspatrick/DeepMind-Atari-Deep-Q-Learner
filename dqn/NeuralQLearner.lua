@@ -51,6 +51,7 @@ function nql:__init(args)
     self.bestq          = 0
 
     self.gpu            = args.gpu
+    self.cudnn          = args.cudnn
 
     self.ncols          = args.ncols or 1  -- number of color channels in input
     self.input_dims     = args.input_dims or {self.hist_len*self.ncols, 84, 84}
@@ -91,6 +92,13 @@ function nql:__init(args)
 
     if self.gpu and self.gpu >= 0 then
         self.network:cuda()
+        if self.cudnn then
+            require 'cudnn'
+            cudnn.benchmark = true
+            cudnn.fastest = true
+            cudnn.convert(self.network, cudnn)
+            print('*** Using cudnn ***')
+        end
     else
         self.network:float()
     end
