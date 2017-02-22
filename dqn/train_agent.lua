@@ -31,6 +31,7 @@ cmd:option('-agent_params', '', 'string of agent parameters')
 cmd:option('-seed', 1, 'fixed input seed for repeatable experiments')
 cmd:option('-saveNetworkParams', false,
            'saves the agent network in a separate file')
+cmd:option('-toc_freq', 1000, 'frequency of timing output')
 cmd:option('-prog_freq', 5*10^3, 'frequency of progress output')
 cmd:option('-save_freq', 5*10^4, 'the model is saved every save_freq steps')
 cmd:option('-eval_freq', 10^4, 'frequency of greedy evaluation')
@@ -79,6 +80,8 @@ local screen, reward, terminal = game_env:getState()
 
 print("Iteration ..", step)
 local win = nil
+local c = require 'trepl.colorize'
+local tic = torch.tic()
 while step < opt.steps do
     step = step + 1
     local action_index = agent:perceive(reward, screen, terminal)
@@ -96,6 +99,10 @@ while step < opt.steps do
 
     -- display screen
     win = image.display({image=screen, win=win})
+
+    if step % opt.toc_freq == 0 then
+        print((c.blue'===> ' .. opt.toc_freq .. ' steps completed in ' .. c.cyan'%.2f s'):format(torch.toc(tic)))
+    end
 
     if step % opt.prog_freq == 0 then
         assert(step==agent.numSteps, 'trainer step: ' .. step ..
@@ -215,5 +222,10 @@ while step < opt.steps do
         print('Saved:', filename .. '.t7')
         io.flush()
         collectgarbage()
+    end
+
+
+    if step % opt.toc_freq == 0 then
+        tic = torch.tic()
     end
 end
