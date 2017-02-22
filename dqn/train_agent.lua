@@ -35,6 +35,7 @@ cmd:option('-toc_freq', 1000, 'frequency of timing output')
 cmd:option('-prog_freq', 5*10^3, 'frequency of progress output')
 cmd:option('-save_freq', 5*10^4, 'the model is saved every save_freq steps')
 cmd:option('-eval_freq', 10^4, 'frequency of greedy evaluation')
+cmd:option('-display_freq', 1, 'frequency of game image display')
 cmd:option('-save_versions', 0, '')
 
 cmd:option('-steps', 10^5, 'number of training steps to perform')
@@ -98,7 +99,9 @@ while step < opt.steps do
     end
 
     -- display screen
-    win = image.display({image=screen, win=win})
+    if opt.display_freq > 0 and step % opt.display_freq == 0 then
+        win = image.display({image=screen, win=win})
+    end
 
     if step % opt.toc_freq == 0 then
         print((c.blue'===> ' .. opt.toc_freq .. ' steps completed in ' .. c.cyan'%.2f s'):format(torch.toc(tic)))
@@ -131,7 +134,9 @@ while step < opt.steps do
             screen, reward, terminal = game_env:step(game_actions[action_index])
 
             -- display screen
-            win = image.display({image=screen, win=win})
+            if opt.display_freq > 0 and estep % opt.display_freq == 0 then
+                win = image.display({image=screen, win=win})
+            end
 
             if estep%1000 == 0 then collectgarbage() end
 
