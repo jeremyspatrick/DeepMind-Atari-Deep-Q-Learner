@@ -93,7 +93,6 @@ function nql:__init(args)
     if self.gpu and self.gpu >= 0 then
         self.network:cuda()
         if self.cudnn then
-            require 'cudnn'
             cudnn.benchmark = true
             cudnn.fastest = true
             cudnn.convert(self.network, cudnn)
