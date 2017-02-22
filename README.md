@@ -1,5 +1,7 @@
 # DeepMind Atari Deep Q Learner
 
+[2017-02-22 update] I used cudnn to speed up training of the DQN. On Jetson TX1, I was able to reduce training time by roughly 1/3 by changing only a few lines of code. Please refer to my blog post, [Using cuDNN to Speed Up DQN Training on Jetson TX1](https://jkjung-avt.github.io/dqn-cudnn/), for more details.
+
 This repository was forked from [kuz's](https://github.com/kuz/DeepMind-Atari-Deep-Q-Learner). I made a few changes to the code so that it could run on NVIDIA's Jetson TX1 platform.
 
 After training the Deep Q Learner on Jetson TX1 for roughly a week, the AI agent could play the 'pong' game like this:
