@@ -94,7 +94,7 @@ function nql:__init(args)
         self.network:cuda()
         if self.cudnn then
             cudnn.benchmark = true
-            cudnn.fastest = true
+            -- cudnn.fastest = true
             cudnn.convert(self.network, cudnn)
             print('*** Using cudnn ***')
         end
