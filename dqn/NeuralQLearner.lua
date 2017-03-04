@@ -115,10 +115,10 @@ function nql:__init(args)
     self.preproc:float()
 
     if self.gpu and self.gpu >= 0 then
-        self.network:cuda()
+        -- self.network:cuda()
         self.tensor_type = torch.CudaTensor
     else
-        self.network:float()
+        -- self.network:float()
         self.tensor_type = torch.FloatTensor
     end
 
