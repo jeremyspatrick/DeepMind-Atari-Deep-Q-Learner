@@ -42,10 +42,11 @@ function torchSetup(_opt)
     --- general setup
     opt.tensorType =  opt.tensorType or 'torch.FloatTensor'
     torch.setdefaulttensortype(opt.tensorType)
-    if not opt.threads then
-        opt.threads = 4
-    end
-    torch.setnumthreads(opt.threads)
+    --- I think it's no longer necessary to call setnumthreads in modern Torch7
+    -- if not opt.threads then
+    --    opt.threads = 4
+    --end
+    --torch.setnumthreads(opt.threads)
     if not opt.verbose then
         opt.verbose = 10
     end
